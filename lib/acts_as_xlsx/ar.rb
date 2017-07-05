@@ -62,9 +62,9 @@ module Axlsx
         header_style = p.workbook.styles.add_style(header_style) unless header_style.nil?
         i18n = self.xlsx_i18n == true ? 'activerecord.attributes' : i18n
         sheet_name = options.delete(:name) || (i18n ? I18n.t("#{i18n}.#{table_name.underscore}") : table_name.humanize) 
-        data = options.delete(:data) || [*find(:all, options)]
-        data.compact!
-        data.flatten!
+        data = options.delete(:data) || [*where(options)]
+          .compact
+          .flatten
 
         return p if data.empty?
         p.workbook.add_worksheet(:name=>sheet_name) do |sheet|
